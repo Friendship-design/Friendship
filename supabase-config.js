@@ -1,3 +1,5 @@
-const SUPABASE_URL = 'https://bqqrrmboyczgojkqgkcf.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_R8yoexRqOov7Y0OEwhsRLw_SfLj5N6g';
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+export const supabase = createClient(
+  'https://bqqrrmboyczgojkqgkcf.supabase.co',
+  'sb_publishable_R8yoexRqOov7Y0OEwhsRLw_SfLj5N6g'
+);
