@@ -9,3 +9,5 @@ FRIENDSHIP EBENHAEZER — V12 FIX UPLOAD
 V13: nama pada setiap postingan diambil dari profil pengguna (full_name/username), bukan 'Anggota Friendship Ebenhaezer'. Tombol Suka, Komentar, dan Bagikan aktif. Suka dan komentar menggunakan tabel likes/comments; Bagikan menggunakan menu share HP atau menyalin tautan.
 
 V14: Grup aktif dengan buat grup, gabung, anggota, posting grup, suka, komentar, dan bagikan. Jalankan GROUPS_SQL.txt di SQL Editor sebelum memakai fitur grup.
+
+V15: memperbaiki kesalahan JavaScript V14 yang membuat tombol tidak merespons. Memperbaiki escape pada tombol Suka/Komentar/Grup dan karakter newline script. Overlay tersembunyi juga tidak lagi menghalangi sentuhan.
