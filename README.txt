@@ -19,3 +19,5 @@ Tidak perlu mengubah pengaturan email untuk perbaikan ini.
 V17: Chat pribadi aktif: cari pengguna, buka percakapan, kirim pesan, dan lihat riwayat. Jalankan CHAT_RLS_FIX.sql sekali di SQL Editor.
 
 V18: upload Foto dan Reels online melalui penyimpanan media, plus perbaikan izin posting, Suka, dan Komentar. Jalankan MEDIA_SOCIAL_FIX.sql sekali di SQL Editor.
+
+V19: Chat dibuat selalu terlihat melalui tombol Chat/floating button dan bagian Chat lengkap. Cari pengguna, buka percakapan, kirim pesan, dan lihat riwayat. Jalankan CHAT_RLS_FIX.sql dari V17 sekali.
