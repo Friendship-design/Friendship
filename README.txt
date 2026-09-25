@@ -11,3 +11,7 @@ V13: nama pada setiap postingan diambil dari profil pengguna (full_name/username
 V14: Grup aktif dengan buat grup, gabung, anggota, posting grup, suka, komentar, dan bagikan. Jalankan GROUPS_SQL.txt di SQL Editor sebelum memakai fitur grup.
 
 V15: memperbaiki kesalahan JavaScript V14 yang membuat tombol tidak merespons. Memperbaiki escape pada tombol Suka/Komentar/Grup dan karakter newline script. Overlay tersembunyi juga tidak lagi menghalangi sentuhan.
+
+V16 memperbaiki pesan "new row violates row-level security policy" pada Suka dan Komentar.
+WAJIB jalankan SOCIAL_RLS_FIX.sql di SQL Editor sebelum mencoba tombol Suka/Komentar lagi.
+Tidak perlu mengubah pengaturan email untuk perbaikan ini.
