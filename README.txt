@@ -1,17 +1,7 @@
-FRIENDSHIP EBENHAEZER — V10 + LOGO
-File ZIP ini sengaja flat agar mudah di-upload ke GitHub Pages.
-
-File:
-- index.html — Beranda, profil, teman, grup, notifikasi, Reels, posting
-- login.html
-- register.html
-- logo.png — logo yang diberikan pengguna
-- README.txt
-
-Upload semua file langsung ke root repository GitHub Pages.
-
-Catatan:
-- Alamat email tidak ditampilkan pada profil.
-- Reels dapat dipilih dan dipreview dari HP.
-- Untuk Reels tersimpan online dan dapat ditonton lintas perangkat, diperlukan Storage video + tabel metadata Reels.
-- Fitur grup menggunakan tabel groups jika tabel tersebut sudah dibuat.
+FRIENDSHIP EBENHAEZER — V12 FIX UPLOAD
+1. Upload semua file ZIP langsung ke root GitHub Pages.
+2. SEBELUM upload foto/video, jalankan SETUP_SQL.txt di Supabase SQL Editor.
+3. Setelah SQL berhasil, login kembali lalu coba Status Foto dan Reels.
+4. Foto/video akan masuk ke penyimpanan online dan URL-nya dicatat di posts.
+5. Email tidak ditampilkan di profil.
+6. Reels memakai tabel posts dengan media_type=video.
