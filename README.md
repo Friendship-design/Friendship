@@ -1,5 +1,6 @@
-# Friendship V5
-Versi ini mengganti nama dan identitas dari Friendster menjadi Friendship dan menggunakan struktur landing page bergaya situs komunitas: header sederhana, Beranda, Tentang, Fitur, Galeri, Kontak, CTA, Login/Register, serta dashboard Supabase.
-
-Referensi visual/struktur: https://ebenhaezertnt-creator.github.io/GMIHTERNATE/
-Bukan salinan logo, teks, foto, atau identitas situs referensi.
+# Friendship V7
+- Semua visual/gambar lokal ditanam langsung di HTML/SVG/CSS; tidak memakai file gambar eksternal.
+- Register dan Login berada di ROOT: register.html dan login.html agar GitHub Pages tidak mengalami /pages/register.html 404.
+- Supabase auth memakai publishable key.
+- Upload seluruh isi ZIP ke root repository GitHub Pages.
+- Pastikan Settings > Pages memakai branch main dan folder /(root).

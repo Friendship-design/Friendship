@@ -1,2 +1,2 @@
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-export const supabase=createClient("https://bqqrrmboyczgojkqgkcf.supabase.co","sb_publishable_R8yoexRqOov7Y0OEwhsRLw_SfLj5N6g");
+window.SUPABASE_URL = 'https://bqqrrmboyczgojkqgkcf.supabase.co';
+window.SUPABASE_KEY = 'sb_publishable_R8yoexRqOov7Y0OEwhsRLw_SfLj5N6g';
