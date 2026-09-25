@@ -21,3 +21,9 @@ V17: Chat pribadi aktif: cari pengguna, buka percakapan, kirim pesan, dan lihat 
 V18: upload Foto dan Reels online melalui penyimpanan media, plus perbaikan izin posting, Suka, dan Komentar. Jalankan MEDIA_SOCIAL_FIX.sql sekali di SQL Editor.
 
 V19: Chat dibuat selalu terlihat melalui tombol Chat/floating button dan bagian Chat lengkap. Cari pengguna, buka percakapan, kirim pesan, dan lihat riwayat. Jalankan CHAT_RLS_FIX.sql dari V17 sekali.
+
+FITUR TAMBAH TEMAN DAN CHAT
+1. Jalankan FRIEND_REQUESTS_SQL.sql sekali di Supabase SQL Editor.
+2. CHAT_RLS_FIX.sql tetap harus sudah dijalankan untuk chat.
+3. Setelah itu upload semua file ZIP ini ke GitHub Pages.
+4. Di menu Teman, pengguna dapat mencari pengguna lain, Tambah Teman, Terima/Tolak permintaan, atau langsung Chat.
