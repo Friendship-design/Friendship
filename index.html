@@ -21,7 +21,17 @@ textarea,input{width:100%;border:1px solid #dbe2ec;border-radius:13px;padding:12
 .reel{background:#050505;border-radius:18px;overflow:hidden;position:relative;margin-bottom:15px}.reel video{display:block;width:100%;max-height:76vh;object-fit:contain;background:#000}.reelInfo{padding:13px;color:#fff}.reelBtns{position:absolute;right:10px;bottom:65px;display:grid;gap:8px}.reelBtns button{width:46px;height:46px;border-radius:50%;background:#fff;color:#18345c;font-weight:800}
 .modal{pointer-events:auto;position:fixed;inset:0;background:#0007;display:grid;place-items:center;z-index:60;padding:16px}.modalBox{background:#fff;border-radius:20px;padding:20px;width:min(520px,100%);max-height:90vh;overflow:auto}
 @media(max-width:980px){.layout{grid-template-columns:220px minmax(0,1fr)}.right{display:none}}@media(max-width:700px){.layout{grid-template-columns:1fr}.left{display:none}.page{margin-top:8px}.brand{display:none}.logoBox{min-width:auto}}
- .action.liked{background:#ffe4e8;color:#d91e45}.commentBox{display:flex;gap:7px;margin-top:10px}.commentBox input{margin:0}.commentItem{padding:8px 0;border-top:1px solid #edf0f5;font-size:14px}</style></head>
+ .action.liked{background:#ffe4e8;color:#d91e45}.commentBox{display:flex;gap:7px;margin-top:10px}.commentBox input{margin:0}.commentItem{padding:8px 0;border-top:1px solid #edf0f5;font-size:14px}
+.chatMessages{height:380px;overflow:auto;padding:10px;background:#f7f9fc;border-radius:14px;margin-top:12px}
+.chatBubble{max-width:78%;padding:10px 13px;border-radius:16px;margin:7px 0;word-break:break-word}
+.chatMine{margin-left:auto;background:#1769e0;color:#fff;border-bottom-right-radius:5px}
+.chatOther{margin-right:auto;background:#fff;color:#1d2939;border-bottom-left-radius:5px}
+.chatTime{font-size:10px;opacity:.7;margin-top:3px}
+.chatUser{display:flex;align-items:center;gap:10px;padding:12px 4px;border-top:1px solid #edf0f5;cursor:pointer}
+.chatUser:first-child{border-top:0}
+.chatComposer{display:flex;gap:8px;margin-top:10px}
+.chatComposer input{margin:0;flex:1}
+</style></head>
 <body>
 <header class="top"><nav class="nav">
 <div class="logoBox"><img src="logo.png"><div class="brand">Friendship Ebenhaezer</div></div>
@@ -46,10 +56,30 @@ textarea,input{width:100%;border:1px solid #dbe2ec;border-radius:13px;padding:12
 <input id="photoInput" class="hidden" type="file" accept="image/jpeg,image/png,image/webp" onchange="previewPhoto(this)"></div>
 <div id="feed"></div></div>
 
-<div id="reels" class="section"><div class="card"><h2>🎬 Reels</h2><p class="muted">Pilih video pendek, lalu bagikan. Video akan disimpan online.</p><input id="reelInput" type="file" accept="video/mp4,video/webm,video/quicktime" onchange="previewReel(this)"><div id="reelPreview"></div><div class="actions"><button class="primary" onclick="publishReel()">Bagikan Reels</button></div><div id="uploadStatus" class="muted"></div></div><div id="reelsList"></div></div>
+<div id="reels" class="section"><div class="card"><h2>🎬 Reels</h2><p class="muted">Pilih video pendek, lalu bagikan. Video akan disimpan online.</p><input id="reelInput" type="file" accept="video/mp4,video/webm,video/quicktime" onchange="previewReel(this)"><div id="reelPreview"></div><input id="reelCaption" placeholder="Tulis keterangan Reels (opsional)"><div class="actions"><button class="primary" onclick="publishReel()">Bagikan Reels</button></div><div id="uploadStatus" class="muted"></div></div><div id="reelsList"></div></div>
 
 <div id="friends" class="section"><div class="card"><h2>Temukan Teman</h2><input id="friendSearch" placeholder="Cari nama atau username..." oninput="searchFriends()"><div id="friendsList"></div></div></div>
 <div id="groups" class="section"><div class="card"><h2>👥 Buat Grup</h2><input id="groupName" placeholder="Nama grup"><textarea id="groupDesc" placeholder="Deskripsi grup"></textarea><div class="actions"><button class="primary" onclick="createGroup()">Buat Grup</button></div></div><div id="groupsList"></div></div>
+
+<div id="chat" class="section">
+  <div class="card">
+    <h2>💬 Chat</h2>
+    <p class="muted">Kirim pesan langsung kepada pengguna Friendship Ebenhaezer.</p>
+    <input id="chatSearch" placeholder="Cari nama pengguna..." oninput="searchChatUsers()">
+  </div>
+  <div id="chatUsers" class="card"><div class="muted">Memuat pengguna...</div></div>
+  <div id="chatWindow" class="card hidden">
+    <div class="actions">
+      <button class="action" onclick="closeChat()">← Kembali</button>
+      <strong id="chatTitle">Chat</strong>
+    </div>
+    <div id="chatMessages" class="chatMessages"></div>
+    <div class="chatComposer">
+      <input id="chatInput" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter')sendChatMessage()">
+      <button class="primary" onclick="sendChatMessage()">Kirim</button>
+    </div>
+  </div>
+</div>
 <div id="notifications" class="section"><div class="card"><h2>🔔 Notifikasi</h2><div class="empty">Belum ada notifikasi.</div></div></div>
 <div id="profile" class="section"><div class="card"><div class="cover"></div><div class="profileTop"><img class="avatar" src="logo.png"><div><div id="profileName" class="name">Profil</div><div id="profileUser" class="muted">@friendship</div></div></div><p class="muted">Alamat email tidak ditampilkan pada profil.</p><div class="stats"><div><b id="profilePosts">0</b><span class="muted">Postingan</span></div><div><b>0</b><span class="muted">Teman</span></div></div><div class="actions"><button class="action" onclick="openEdit()">✏️ Edit profil</button><button class="action" onclick="logout()">Keluar</button></div></div><div class="card"><h3>Postingan Saya</h3><div id="profileFeed"></div></div></div>
 </section><aside class="right"><div class="card"><h3>🔎 Cari</h3><input placeholder="Cari teman..." onkeydown="if(event.key==='Enter'){go('friends');document.getElementById('friendSearch').value=this.value;searchFriends()}"></div><div class="card"><h3>Friendship Ebenhaezer</h3><p class="muted">Bagikan cerita, foto, video, dan Reels bersama komunitas.</p></div></aside>
@@ -73,10 +103,11 @@ function previewReel(input){reelFile=input.files[0]||null;let b=document.getElem
 function cleanName(n){return n.replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,80)}
 async function uploadFile(file,type){
 const u=user();if(!u)throw Error('Silakan masuk terlebih dahulu.');
-if(file.size>50*1024*1024)throw Error('Ukuran video/foto maksimal 50 MB.');
+const max=file.type && file.type.startsWith('video/') ? 100*1024*1024 : 15*1024*1024;
+if(file.size>max)throw Error(file.type && file.type.startsWith('video/')?'Ukuran Reels maksimal 100 MB.':'Ukuran foto maksimal 15 MB.');
 const path=u.id+'/'+Date.now()+'-'+cleanName(file.name||('file.'+(type==='video'?'mp4':'jpg')));
 const r=await fetch(API+'/storage/v1/object/'+BUCKET+'/'+path,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+auth(),'x-upsert':'true','Content-Type':file.type||'application/octet-stream'},body:file});
-if(!r.ok){let t=await r.text();throw Error(t||'Upload file gagal. Pastikan penyimpanan media sudah dibuat.')}
+if(!r.ok){let t=await r.text();throw Error('Upload gagal. Pastikan penyimpanan media sudah dibuat dan izin upload sudah dijalankan.');}
 const url=API+'/storage/v1/object/public/'+BUCKET+'/'+path.split('/').map(encodeURIComponent).join('/');
 return {url,type};
 }
@@ -90,7 +121,7 @@ try{let media=null;if(photoFile)media=await uploadFile(photoFile,'image');await 
 function mediaHtml(p){if(!p.media_url)return '';if(p.media_type==='image')return '<img class="postMedia" src="'+esc(p.media_url)+'" loading="lazy">';if(p.media_type==='video')return '<video class="postMedia" controls playsinline preload="metadata" src="'+esc(p.media_url)+'"></video>';return ''}
 function postCard(p,name){name=name||'Pengguna';return '<article class="card" data-post-id="'+esc(p.id)+'"><div class="postHead"><img class="mini" src="logo.png"><div><b>'+esc(name)+'</b><div class="muted">'+new Date(p.created_at).toLocaleString('id-ID')+'</div></div></div><p class="postText">'+esc(p.content||'')+'</p>'+mediaHtml(p)+'<div class="actions"><button class="action" onclick="toggleLike(\''+esc(p.id)+'\',this)">❤️ Suka <span class="likeCount">0</span></button><button class="action" onclick="toggleComments(\''+esc(p.id)+'\')">💬 Komentar <span class="commentCount">0</span></button><button class="action" onclick="sharePost(\''+esc(p.id)+'\')">↗️ Bagikan</button></div><div id="comments-'+esc(p.id)+'" class="comments hidden"></div></article>'}
 async function loadFeed(){let el=document.getElementById('feed');el.innerHTML='<div class="card">Memuat...</div>';try{let rows=await api('/rest/v1/posts?select=*&order=created_at.desc&limit=40');let ps=await api('/rest/v1/profiles?select=id,username,full_name&limit=1000').catch(()=>[]);let map={};ps.forEach(x=>map[x.id]=x);el.innerHTML=rows.length?rows.map(p=>postCard(p,map[p.user_id]?.full_name||map[p.user_id]?.username||'Pengguna')).join(''):'<div class="card empty">Belum ada postingan.</div>';document.getElementById('sidePostCount').textContent=rows.length;document.getElementById('profilePosts').textContent=rows.length;rows.forEach(p=>loadPostStats(p.id))}catch(e){el.innerHTML='<div class="card empty">Postingan belum dapat dimuat.</div>'}}
-async function publishReel(){const u=user();if(!u){location.href='login.html';return}if(!reelFile){alert('Pilih video terlebih dahulu.');return}const st=document.getElementById('uploadStatus');st.textContent='Mengupload video...';try{let media=await uploadFile(reelFile,'video');await savePost('',media);st.textContent='Video berhasil diupload.';reelFile=null;document.getElementById('reelInput').value='';document.getElementById('reelPreview').innerHTML='';loadReels();alert('Reels berhasil dibagikan.')}catch(e){st.textContent='';alert('Reels belum bisa diupload. '+e.message)}}
+async function publishReel(){const u=user();if(!u){location.href='login.html';return}if(!reelFile){alert('Pilih video terlebih dahulu.');return}const st=document.getElementById('uploadStatus');st.textContent='Mengupload video...';try{let media=await uploadFile(reelFile,'video');await savePost(document.getElementById('reelCaption')?.value.trim()||'',media);st.textContent='Video berhasil diupload.';reelFile=null;document.getElementById('reelInput').value='';document.getElementById('reelPreview').innerHTML='';if(document.getElementById('reelCaption'))document.getElementById('reelCaption').value='';loadReels();alert('Reels berhasil dibagikan.')}catch(e){st.textContent='';alert('Reels belum bisa diupload. '+e.message)}}
 async function loadReels(){let el=document.getElementById('reelsList');el.innerHTML='<div class="card empty">Memuat Reels...</div>';try{let rows=await api('/rest/v1/posts?select=*&media_type=eq.video&order=created_at.desc&limit=30');if(!rows.length){el.innerHTML='<div class="card empty">Belum ada Reels.</div>';return}el.innerHTML=rows.map(p=>'<div class="reel"><video controls playsinline preload="metadata" src="'+esc(p.media_url)+'"></video><div class="reelInfo"><b>Friendship Ebenhaezer</b><div class="muted" style="color:#ddd">'+new Date(p.created_at).toLocaleString('id-ID')+'</div></div><div class="reelBtns"><button>❤️</button><button>💬</button><button>↗</button></div></div>').join('')}catch(e){el.innerHTML='<div class="card empty">Reels belum dapat dimuat.</div>'}}
 async function searchFriends(){let el=document.getElementById('friendsList');if(!el)return;el.innerHTML='<p class="muted">Mencari...</p>';let q=document.getElementById('friendSearch').value.trim();try{let path='/rest/v1/profiles?select=id,username,full_name&limit=40';if(q)path+='&or=(username.ilike.*'+encodeURIComponent(q)+'*,full_name.ilike.*'+encodeURIComponent(q)+'*)';let rows=await api(path);el.innerHTML=rows.map(x=>'<div class="person"><img class="mini" src="logo.png"><div style="flex:1"><b>'+esc(x.full_name||'Pengguna')+'</b><div class="muted">@'+esc(x.username||'friendship')+'</div></div><button class="action">Tambah</button></div>').join('')||'<div class="empty">Tidak ditemukan.</div>'}catch(e){el.innerHTML='<div class="empty">Pencarian belum dapat dilakukan.</div>'}}
 async function createGroup(){const u=user();if(!u){location.href='login.html';return}let n=document.getElementById('groupName').value.trim(),d=document.getElementById('groupDesc').value.trim();if(!n){alert('Masukkan nama grup.');return}try{await api('/rest/v1/groups',{method:'POST',body:JSON.stringify({name:n,description:d,created_by:u.id})});alert('Grup berhasil dibuat.');loadGroups()}catch(e){alert('Grup belum dapat dibuat. Pastikan tabel grup sudah tersedia. '+e.message)}}
@@ -105,6 +136,64 @@ async function toggleLike(id,btn){let u=user();if(!u){location.href='login.html'
 async function toggleComments(id){let box=document.getElementById('comments-'+id);if(!box)return;if(!box.classList.contains('hidden')){box.classList.add('hidden');return}box.classList.remove('hidden');box.innerHTML='<div class="muted">Memuat komentar...</div>';try{let cs=await api('/rest/v1/comments?select=id,user_id,content,created_at&post_id=eq.'+encodeURIComponent(id)+'&order=created_at.asc');let ps=await api('/rest/v1/profiles?select=id,username,full_name&limit=1000').catch(()=>[]);let map={};ps.forEach(x=>map[x.id]=x);box.innerHTML=cs.map(c=>'<div class="commentItem"><b>'+esc(map[c.user_id]?.full_name||map[c.user_id]?.username||'Pengguna')+'</b> '+esc(c.content)+'</div>').join('')+'<div class="commentBox"><input id="comment-'+esc(id)+'" placeholder="Tulis komentar..."><button class="primary" onclick="addComment(\''+esc(id)+'\')">Kirim</button></div>'}catch(e){box.innerHTML='<div class="muted">Komentar belum dapat dimuat.</div>'}}
 async function addComment(id){let u=user();if(!u){location.href='login.html';return}let inp=document.getElementById('comment-'+id);let content=inp?.value.trim();if(!content)return;try{await api('/rest/v1/comments',{method:'POST',body:JSON.stringify({post_id:id,user_id:u.id,content})});document.getElementById('comments-'+id).classList.add('hidden');await toggleComments(id);loadPostStats(id)}catch(e){alert('Komentar belum dapat dikirim. '+e.message)}}
 async function sharePost(id){let url=location.origin+location.pathname+'?post='+encodeURIComponent(id);try{if(navigator.share){await navigator.share({title:'Friendship Ebenhaezer',text:'Lihat postingan ini',url:url})}else if(navigator.clipboard){await navigator.clipboard.writeText(url);alert('Tautan postingan sudah disalin.')}else{prompt('Salin tautan ini:',url)}}catch(e){}}
+
+async function loadChatUsers(){
+  const box=document.getElementById('chatUsers'); if(!box)return;
+  const u=currentUser(); if(!u){box.innerHTML='<div class="muted">Silakan login untuk menggunakan Chat.</div>';return}
+  try{
+    const rows=await api('/rest/v1/profiles?select=id,username,full_name&limit=500');
+    window.chatUsers=rows.filter(x=>x.id!==u.id);
+    renderChatUsers(window.chatUsers);
+  }catch(e){box.innerHTML='<div class="muted">Daftar pengguna belum dapat dimuat.</div>'}
+}
+function renderChatUsers(users){
+  const box=document.getElementById('chatUsers'); if(!box)return;
+  if(!users.length){box.innerHTML='<div class="muted">Belum ada pengguna lain.</div>';return}
+  box.innerHTML=users.map(x=>'<div class="chatUser" onclick="openChat(\''+esc(x.id)+'\',\''+esc(x.full_name||x.username||'Pengguna')+'\')"><img class="mini" src="logo.png"><div><b>'+esc(x.full_name||x.username||'Pengguna')+'</b><div class="muted">@'+esc(x.username||'friendship')+'</div></div></div>').join('');
+}
+function searchChatUsers(){
+  const q=(document.getElementById('chatSearch')?.value||'').toLowerCase().trim();
+  const users=window.chatUsers||[];
+  renderChatUsers(users.filter(x=>(x.full_name||'').toLowerCase().includes(q)||(x.username||'').toLowerCase().includes(q)));
+}
+async function openChat(otherId,name){
+  const u=currentUser();if(!u){location.href='login.html';return}
+  window.activeChatUserId=otherId;
+  document.getElementById('chatUsers').classList.add('hidden');
+  document.getElementById('chatSearch').classList.add('hidden');
+  document.getElementById('chatWindow').classList.remove('hidden');
+  document.getElementById('chatTitle').textContent=name;
+  await loadMessages();
+}
+function closeChat(){
+  document.getElementById('chatWindow').classList.add('hidden');
+  document.getElementById('chatUsers').classList.remove('hidden');
+  document.getElementById('chatSearch').classList.remove('hidden');
+}
+async function loadMessages(){
+  const box=document.getElementById('chatMessages');if(!box)return;
+  const u=currentUser(),other=window.activeChatUserId;if(!u||!other)return;
+  try{
+    const a=await api('/rest/v1/messages?select=*&sender_id=eq.'+encodeURIComponent(u.id)+'&receiver_id=eq.'+encodeURIComponent(other)+'&order=created_at.asc');
+    const b=await api('/rest/v1/messages?select=*&sender_id=eq.'+encodeURIComponent(other)+'&receiver_id=eq.'+encodeURIComponent(u.id)+'&order=created_at.asc');
+    const rows=a.concat(b).sort((x,y)=>new Date(x.created_at)-new Date(y.created_at));
+    box.innerHTML=rows.length?rows.map(m=>'<div class="chatBubble '+(m.sender_id===u.id?'chatMine':'chatOther')+'">'+esc(m.content||m.message||'')+'<div class="chatTime">'+new Date(m.created_at).toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit'})+'</div></div>').join(''):'<div class="muted" style="text-align:center;padding:30px">Belum ada pesan. Mulai percakapan.</div>';
+    box.scrollTop=box.scrollHeight;
+  }catch(e){box.innerHTML='<div class="muted">Pesan belum dapat dimuat.</div>'}
+}
+async function sendChatMessage(){
+  const u=currentUser(),other=window.activeChatUserId;
+  if(!u){location.href='login.html';return}
+  const input=document.getElementById('chatInput'),content=input?.value.trim();
+  if(!other||!content)return;
+  try{
+    await api('/rest/v1/messages',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({sender_id:u.id,receiver_id:other,content:content})});
+    input.value=''; await loadMessages();
+  }catch(e){alert('Pesan belum dapat dikirim. Jalankan CHAT_RLS_FIX.sql terlebih dahulu.')}
+}
+async function initChat(){try{await loadChatUsers()}catch(e){}}
+
 function logout(){localStorage.clear();location.href='login.html'}
 applyUser();loadFeed();loadProfileFeed();
+initChat();
 </script></body></html>

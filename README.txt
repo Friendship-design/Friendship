@@ -15,3 +15,7 @@ V15: memperbaiki kesalahan JavaScript V14 yang membuat tombol tidak merespons. M
 V16 memperbaiki pesan "new row violates row-level security policy" pada Suka dan Komentar.
 WAJIB jalankan SOCIAL_RLS_FIX.sql di SQL Editor sebelum mencoba tombol Suka/Komentar lagi.
 Tidak perlu mengubah pengaturan email untuk perbaikan ini.
+
+V17: Chat pribadi aktif: cari pengguna, buka percakapan, kirim pesan, dan lihat riwayat. Jalankan CHAT_RLS_FIX.sql sekali di SQL Editor.
+
+V18: upload Foto dan Reels online melalui penyimpanan media, plus perbaikan izin posting, Suka, dan Komentar. Jalankan MEDIA_SOCIAL_FIX.sql sekali di SQL Editor.
