@@ -1,15 +1,13 @@
-FRIENDSHIP EBENHAEZER V27
+Friendship Ebenhaezer V28
 
-Perbaikan utama:
-- Auto refresh login token agar fitur tidak berhenti setelah token lama.
-- Hapus event listener ganda yang menyebabkan klik dua kali.
-- Chat kirim/riwayat.
-- Posting dan Reels.
-- Like, komentar, bagikan.
-- Foto profil dan banner.
-- Tambah/terima teman.
-- Statistik per pengguna.
-- Notifikasi per pengguna.
+PENTING: jalankan FIX_ALL_V28.sql SEKALI di Supabase SQL Editor.
+Setelah itu upload SEMUA isi folder ini langsung ke root repository GitHub Pages.
+Logout lalu login kembali setelah update.
 
-WAJIB: jalankan FIX_ALL_V27.sql SEKALI di Supabase SQL Editor.
-Setelah itu upload semua isi ZIP langsung ke root repository GitHub Pages.
+Perbaikan utama V28:
+- memperbaiki error notifications.actor_id yang menyebabkan LIKE, CHAT, komentar, dan permintaan teman gagal
+- memastikan actor_id ditambahkan walaupun tabel notifications sudah pernah dibuat sebelumnya
+- memperbaiki penyimpanan foto profil dan banner
+- memperbaiki penyimpanan foto posting dan Reels
+- mencegah tombol Bagikan terkirim/terbuka dua kali
+- mempertahankan fitur lain dari V27
