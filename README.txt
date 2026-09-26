@@ -1,19 +1,15 @@
-FRIENDSHIP EBENHAEZER V26
+FRIENDSHIP EBENHAEZER V27
 
-Perbaikan:
-- Chat diperbaiki dan menampilkan detail error jika izin database belum aktif.
-- Jumlah teman dihitung dari permintaan yang sudah accepted untuk pengguna yang sedang login.
-- Foto profil dapat diganti dari Edit Profil.
-- Banner profil dapat diganti dari Edit Profil.
-- Foto profil tampil di area profil/composer.
-- Fitur lain tetap dipertahankan.
-- Tidak ada menu/teks Komunitas.
+Perbaikan utama:
+- Auto refresh login token agar fitur tidak berhenti setelah token lama.
+- Hapus event listener ganda yang menyebabkan klik dua kali.
+- Chat kirim/riwayat.
+- Posting dan Reels.
+- Like, komentar, bagikan.
+- Foto profil dan banner.
+- Tambah/terima teman.
+- Statistik per pengguna.
+- Notifikasi per pengguna.
 
-WAJIB dijalankan sekali di Supabase SQL Editor:
-1. CHAT_RLS_FIX_V26.sql
-2. PROFILE_CUSTOM_SQL.sql
-
-Jika notifikasi V25 belum pernah dijalankan, jalankan juga:
-3. NOTIFICATIONS_SQL.sql
-
-Untuk media foto/video, MEDIA_SOCIAL_FIX.sql tetap boleh dijalankan jika sebelumnya belum pernah dijalankan.
+WAJIB: jalankan FIX_ALL_V27.sql SEKALI di Supabase SQL Editor.
+Setelah itu upload semua isi ZIP langsung ke root repository GitHub Pages.
