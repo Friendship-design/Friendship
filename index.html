@@ -97,7 +97,15 @@ textarea{min-height:86px;resize:vertical}
 .profileTop .avatar{cursor:pointer}
 .smallBtn{padding:8px 10px;font-size:12px}
 .danger{border-color:#8b2c55!important;color:#ffb0c8!important}
-</style></head>
+</style>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="theme-color" content="#7b3ff2">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Friendship Forever">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
 <body>
 <header class="top"><nav class="nav"><div class="logoBox"><img src="logo.png"><div class="brand">Friendship Forever</div></div>
 <button class="navBtn" data-page="chat" data-chat-nav onclick="go('chat');initChat()">💬 Chat</button>
@@ -105,7 +113,7 @@ textarea{min-height:86px;resize:vertical}
 <button class="navBtn" data-page="reels" onclick="go('reels')">🎬 Reels</button>
 <button class="navBtn" data-page="friends" onclick="go('friends')">👥 Teman</button>
 <button class="navBtn" data-page="notifications" onclick="go('notifications')">🔔 <span id="notifBadge" class="notifBadge">0</span></button>
-<button class="navBtn" data-page="profile" onclick="go('profile')">Profil</button>
+<button class="navBtn" data-page="profile" onclick="go('profile')">Profil</button><button class="navBtn" id="installAppBtn" type="button" style="display:none">📲 Instal</button>
 </nav></header>
 
 <main class="page"><div class="layout">
@@ -156,6 +164,16 @@ textarea{min-height:86px;resize:vertical}
 
 <div id="editModal" class="modal hidden"><div class="modalBox"><h2>Edit Profil</h2><input id="editName" placeholder="Nama lengkap"><input id="editUsername" placeholder="Username"><textarea id="editBio" placeholder="Bio"></textarea><div class="customizeBox"><b>Foto profil</b><p class="muted">Foto ini akan tampil di samping nama Anda.</p><input id="profileAvatarInput" class="profileAvatarInput" type="file" accept="image/jpeg,image/png,image/webp" onchange="previewAvatar(this)"><button class="action smallBtn" type="button" onclick="document.getElementById('profileAvatarInput').click()">📷 Pilih foto profil</button><div id="avatarPreview" class="muted"></div></div><div class="customizeBox"><b>Banner profil</b><p class="muted">Pilih foto untuk banner di bagian atas profil.</p><input id="bannerInput" class="bannerInput" type="file" accept="image/jpeg,image/png,image/webp" onchange="previewBanner(this)"><button class="action smallBtn" type="button" onclick="document.getElementById('bannerInput').click()">🖼️ Pilih banner</button><div id="bannerPreview" class="muted"></div></div><div class="actions"><button class="primary" id="saveProfileBtn" onclick="saveProfile()">Simpan</button><button class="action" id="closeEditBtn" onclick="closeEdit()">Batal</button></div></div></div>
 
+
+<div id="installModal" class="modal hidden">
+  <div class="modalBox">
+    <h2>📲 Instal Friendship Forever</h2>
+    <p id="installText" class="muted" style="font-size:15px;line-height:1.7"></p>
+    <div class="actions">
+      <button class="primary" type="button" onclick="closeInstallModal()">Tutup</button>
+    </div>
+  </div>
+</div>
 <script>
 const API='https://bqqrrmboyczgojkqgkcf.supabase.co';
 const KEY='sb_publishable_R8yoexRqOov7Y0OEwhsRLw_SfLj5N6g';
@@ -246,6 +264,70 @@ async function sendChatMessage(){if(chatSending)return;const u=user(),o=activeCh
 async function viewUserProfile(id){const modal=document.getElementById('userProfileModal');if(!modal)return;try{const ps=await api('/rest/v1/profiles?select=id,username,full_name,bio,avatar_url,banner_url&id=eq.'+encodeURIComponent(id));const p=ps?.[0];if(!p)throw Error('Profil pengguna tidak ditemukan.');document.getElementById('viewProfileName').textContent=p.full_name||p.username||'Pengguna';document.getElementById('viewProfileUser').textContent='@'+(p.username||'friendship');document.getElementById('viewProfileBio').textContent=p.bio||'';document.getElementById('viewProfileAvatar').src=p.avatar_url||'logo.png';const cover=document.getElementById('viewProfileCover');cover.style.backgroundImage=p.banner_url?'url("'+p.banner_url.replace(/"/g,'%22')+'")':'';cover.classList.toggle('customCover',!!p.banner_url);const posts=await api('/rest/v1/posts?select=*&user_id=eq.'+encodeURIComponent(id)+'&order=created_at.desc&limit=30');document.getElementById('viewProfilePosts').textContent=posts.length;const fr=await api('/rest/v1/friend_requests?select=id,requester_id,recipient_id,status&status=eq.accepted&limit=1000').catch(()=>[]);document.getElementById('viewProfileFriends').textContent=fr.filter(x=>x.requester_id===id||x.recipient_id===id).length;const feed=document.getElementById('viewProfileFeed');feed.innerHTML=posts.length?posts.map(x=>postCard(x,p.full_name||p.username||'Pengguna',p.avatar_url||'logo.png')).join(''):'<div class="empty">Belum ada postingan.</div>';posts.forEach(x=>loadPostStats(x.id));const me=user(),fb=document.getElementById('viewProfileFriendBtn'),cb=document.getElementById('viewProfileChatBtn');if(me&&me.id===id){fb.style.display='none'}else{fb.style.display='inline-block';fb.textContent='Tambah Teman';fb.onclick=async()=>{const map=await getFriendMap(),r=map[id];if(r?.status==='accepted')alert('Sudah menjadi teman.');else if(r?.status==='pending')alert('Permintaan teman sudah ada.');else await addFriend(id,p.full_name||p.username||'Pengguna')}}cb.onclick=()=>{closeUserProfile();go('chat');openChat(id,p.full_name||p.username||'Pengguna')};modal.classList.remove('hidden')}catch(e){alert('Profil belum dapat dibuka. '+e.message)}}
 function closeUserProfile(){document.getElementById('userProfileModal')?.classList.add('hidden')}
 function logout(){localStorage.removeItem('friendship_access_token');localStorage.removeItem('friendship_refresh_token');localStorage.removeItem('friendship_user');location.href='login.html'}
+
+let friendshipInstallPrompt = null;
+
+function closeInstallModal(){
+  const m = document.getElementById('installModal');
+  if(m) m.classList.add('hidden');
+}
+
+function showInstallHelp(){
+  const modal = document.getElementById('installModal');
+  const text = document.getElementById('installText');
+  if(!modal || !text) return;
+
+  const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+  if(standalone){
+    text.textContent = 'Friendship Forever sudah terpasang di perangkat ini.';
+  }else if(isiOS){
+    text.innerHTML = 'Di iPhone/iPad: buka situs ini dengan <b>Safari</b> → tekan tombol <b>Bagikan</b> → pilih <b>Tambahkan ke Layar Utama</b> → tekan <b>Tambahkan</b>.';
+  }else{
+    text.innerHTML = 'Di Android: tekan <b>Instal</b>. Jika dialog instal tidak muncul, buka menu browser <b>⋮</b> lalu pilih <b>Instal aplikasi</b> atau <b>Tambahkan ke layar utama</b>.';
+  }
+  modal.classList.remove('hidden');
+}
+
+async function installFriendshipApp(){
+  if(friendshipInstallPrompt){
+    friendshipInstallPrompt.prompt();
+    try { await friendshipInstallPrompt.userChoice; } catch(e) {}
+    friendshipInstallPrompt = null;
+    const b = document.getElementById('installAppBtn');
+    if(b) b.style.display = 'none';
+  }else{
+    showInstallHelp();
+  }
+}
+
+window.addEventListener('beforeinstallprompt', event => {
+  event.preventDefault();
+  friendshipInstallPrompt = event;
+  const b = document.getElementById('installAppBtn');
+  if(b) b.style.display = 'inline-block';
+});
+
+window.addEventListener('appinstalled', () => {
+  friendshipInstallPrompt = null;
+  const b = document.getElementById('installAppBtn');
+  if(b) b.style.display = 'none';
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const b = document.getElementById('installAppBtn');
+  if(b) b.addEventListener('click', installFriendshipApp);
+
+  const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  if(b && isiOS && !standalone) b.style.display = 'inline-block';
+
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+});
+
 async function boot(){if(refreshToken() && !accessToken()) await refreshSession();await applyUser();await loadFeed();await loadProfileFeed();await loadMyStats();await loadNotifications();await initChat();}
 boot();
 setInterval(async()=>{if(refreshToken()) await refreshSession();await loadMyStats();if(document.getElementById('notifications')?.classList.contains('show'))await loadNotifications();if(document.getElementById('chat')?.classList.contains('show')&&activeChatUserId)await loadMessages()},5000);

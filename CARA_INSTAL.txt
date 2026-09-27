@@ -1,0 +1,28 @@
+FRIENDSHIP FOREVER V32 — PWA
+
+Yang ditambahkan:
+- Bisa diinstal seperti aplikasi di Android.
+- Bisa ditambahkan ke Layar Utama iPhone/iPad.
+- Ikon Friendship Forever.
+- Tampilan standalone seperti aplikasi.
+- Tombol Instal.
+- Service Worker.
+- Semua fitur V31 tetap dipertahankan.
+
+ANDROID
+1. Upload semua isi ZIP ke root repository GitHub Pages.
+2. Buka Friendship Forever di Chrome Android.
+3. Tekan tombol 📲 Instal.
+4. Konfirmasi instalasi.
+5. Ikon Friendship Forever muncul di layar aplikasi.
+
+iPHONE / iPAD
+1. Upload semua isi ZIP ke root repository GitHub Pages.
+2. Buka situs dengan Safari.
+3. Tekan Bagikan.
+4. Pilih Tambahkan ke Layar Utama.
+5. Tekan Tambahkan.
+
+CATATAN
+- GitHub Pages menggunakan HTTPS, sehingga cocok untuk PWA.
+- Jangan menghapus manifest.webmanifest, sw.js, atau file ikon.
